@@ -13,8 +13,8 @@
 define android::system_images() {
 
   android::package{ $title:
-    type => 'system-images',
-    creates => system_image_directory($title)  
+    type    => 'system-images',
+    creates => system_image_directory($title)
   }
 
 }

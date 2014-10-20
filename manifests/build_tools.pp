@@ -14,7 +14,7 @@ define android::build_tools() {
 
   $title_parts = split($title, '-')
   android::package{ $title:
-    type => 'build-tools',
+    type    => 'build-tools',
     creates => "build-tools/${title_parts[2]}"
   }
 

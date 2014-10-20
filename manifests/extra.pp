@@ -14,7 +14,7 @@ define android::extra() {
 
   $title_parts = split($title, '-')
   android::package{ $title:
-    type => 'extra',
+    type    => 'extra',
     creates => "extras/${title_parts[1]}/${title_parts[2]}"
   }
 

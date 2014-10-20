@@ -16,7 +16,7 @@ class android::params {
   $proxy_host = undef
   $proxy_port = undef
   $installdir = '/usr/local/android'
-  
+
   case $::kernel {
     'Linux': {
       $user       = 'root'

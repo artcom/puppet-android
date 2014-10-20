@@ -13,7 +13,7 @@
 define android::addon() {
 
   android::package{ $title:
-    type => 'addon',
+    type    => 'addon',
     creates => "add-ons/${title}",
   }
 
