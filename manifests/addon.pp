@@ -14,6 +14,7 @@ define android::addon() {
 
   android::package{ $title:
     type => 'addon',
+    creates => "add-ons/${title}",
   }
 
 }

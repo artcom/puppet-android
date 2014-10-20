@@ -15,7 +15,10 @@
 #
 # Copyright 2012 MaestroDev, unless otherwise noted.
 #
-define android::package($type) {
+define android::package(
+  $type,
+  $creates
+) {
   include android
 
   if ( $::id == 'root' ) {
@@ -25,33 +28,34 @@ define android::package($type) {
   $proxy_host = $android::proxy_host ? { undef => '', default => "--proxy-host ${android::proxy_host}" }
   $proxy_port = $android::proxy_port ? { undef => '', default => "--proxy-port ${android::proxy_port}" }
 
-  case $type {
-    'platform-tools': {
-      $creates = "${android::paths::sdk_home}/platform-tools"
-    }
-    'platform': {
-      $creates = "${android::paths::sdk_home}/platforms/${title}"
-    }
-    'system-images': {
-      $title_parts = split($title, '-')
-      $creates = "${android::paths::sdk_home}/system-images/android-${title_parts[1]}"
-    }
-    'addon': {
-      $creates = "${android::paths::sdk_home}/add-ons/${title}"
-    }
-    'extra': {
-      $title_parts = split($title, '-')
-      $creates = "${android::paths::sdk_home}/extras/${title_parts[1]}/${title_parts[2]}"
-    }
-    'build-tools': {
-      $title_parts = split($title, '-')
-      
-      $creates = "${android::paths::sdk_home}/build-tools/${title_parts[2]}"
-    }
-    default: {
-      fail("Unsupported package type: ${type}")
-    }
-  }
+  # 
+  # case $type {
+  #   'platform-tools': {
+  #     $creates = "${android::paths::sdk_home}/platform-tools"
+  #   }
+  #   'platform': {
+  #     $creates = "${android::paths::sdk_home}/platforms/${title}"
+  #   }
+  #   'system-images': {
+  #     $title_parts = split($title, '-')
+  #     $creates = "${android::paths::sdk_home}/system-images/android-${title_parts[1]}"
+  #   }
+  #   'addon': {
+  #     $creates = "${android::paths::sdk_home}/add-ons/${title}"
+  #   }
+  #   'extra': {
+  #     $title_parts = split($title, '-')
+  #     $creates = "${android::paths::sdk_home}/extras/${title_parts[1]}/${title_parts[2]}"
+  #   }
+  #   'build-tools': {
+  #     $title_parts = split($title, '-')
+  #     
+  #     $creates = "${android::paths::sdk_home}/build-tools/${title_parts[2]}"
+  #   }
+  #   default: {
+  #     fail("Unsupported package type: ${type}")
+  #   }
+  # }
 
   file { "${android::installdir}/expect-install-${title}":
     content => template("android/expect-script.erb"),
@@ -59,7 +63,7 @@ define android::package($type) {
   } ->
   exec { "update-android-package-${title}":
     command => "${android::installdir}/expect-install-${title}",
-    creates => $creates,
+    creates => "${android::paths::sdk_home}/${creates}",
     timeout => 0,
     require => [Class['android::sdk']],
   }

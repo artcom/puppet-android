@@ -14,6 +14,7 @@ define android::platform() {
 
   android::package{ $title:
     type => 'platform',
+    creates => "platforms/${title}"
   }
 
 }

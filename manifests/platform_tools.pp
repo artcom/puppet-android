@@ -14,6 +14,7 @@ class android::platform_tools {
 
   android::package{ 'platform-tools':
     type => 'platform-tools',
+    creates => 'platform-tools'
   }
 
 }

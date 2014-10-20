@@ -6,7 +6,7 @@ describe 'android::package' do
 
   context 'linux', :compile do
     let(:title) { 'android-15' }
-    let(:params) { { :type => 'platform' } }
+    let(:params) { { :type => 'platform', :creates => 'platforms/android-15' } }
     it { should contain_file("#{dir}/expect-install-android-15")
       .with_content(/android update sdk -u --all -t android-15/) }
     it { should contain_exec('update-android-package-android-15').with({
@@ -15,23 +15,12 @@ describe 'android::package' do
     }) }
   end
   
-  context 'bad package type' do
-    let(:title) { 'bad' }
-    let(:params) { { :type => 'bad' } }
-    
-    it do
-      expect {
-        should contain_exec('update-android-package-bad') 
-      }.to raise_error(Puppet::Error, /Unsupported package type: bad/) 
-    end
-  end
-  
   context 'Mac OS X', :compile do
     let(:facts) { {
       :kernel => 'Darwin',
     } }
     let(:title) { 'android-15' }
-    let(:params) { { :type => 'platform' } }
+    let(:params) { { :type => 'platform', :creates => 'platforms/android-15' } }
     it { should contain_file("#{dir}/expect-install-android-15").with_content(/android update sdk -u --all -t android-15/) }
     it { should contain_exec('update-android-package-android-15').with({
       :command => "#{dir}/expect-install-android-15",
