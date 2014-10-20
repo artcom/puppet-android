@@ -12,11 +12,9 @@
 #
 define android::system_images() {
 
-  $title_parts = split($title, '-')
-
   android::package{ $title:
     type => 'system-images',
-    creates => "system-images/android-${title_parts[1]}"
+    creates => system_image_directory($title)  
   }
 
 }
